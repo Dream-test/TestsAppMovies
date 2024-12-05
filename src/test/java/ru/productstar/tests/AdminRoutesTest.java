@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class AdminRoutesTest implements CommonSetup{
+public class AdminRoutesTest extends InitDBConnection {
     OkHttpClient client;
 
     @BeforeEach
@@ -22,7 +22,7 @@ public class AdminRoutesTest implements CommonSetup{
         String[] filmTitles = null;
         try {
             // Class.forName("org.postgresql.Driver");
-            Statement statement = InitDBConnection.connection.createStatement();
+            Statement statement = AdminRoutesTest.connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT title FROM movies"); //Получаем из БД список titles of movies
             List<String> titleList = new ArrayList<>();
             while (resultSet.next()) {
@@ -54,7 +54,7 @@ public class AdminRoutesTest implements CommonSetup{
         String filmTitle = "";
         String filmID = "";
         try {
-            Statement statement = InitDBConnection.connection.createStatement();
+            Statement statement = AdminRoutesTest.connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT id, title FROM movies LIMIT 1");  //Получаем id и title первого movie из БД
             while (resultSet.next()) {
                 filmTitle = resultSet.getString("title");
@@ -87,10 +87,10 @@ public class AdminRoutesTest implements CommonSetup{
         String filmTitle = "";
         String filmID = "";
         try {
-            Statement statement = InitDBConnection.connection.createStatement();
+            Statement statement = AdminRoutesTest.connection.createStatement();
             statement.executeUpdate("insert into movies (title) values ('New title')"); //Добавляем новый movie в БД
 
-            statement = InitDBConnection.connection.createStatement();
+            statement = AdminRoutesTest.connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT id, title FROM movies where title = 'New title'");  //Получаем id добавленного movie
             while (resultSet.next()) {
                 filmTitle = resultSet.getString("title");
@@ -110,7 +110,7 @@ public class AdminRoutesTest implements CommonSetup{
             Assertions.assertEquals(200, response.code());  //Проверяем статус код response
 
             // Class.forName("org.postgresql.Driver");
-            statement = InitDBConnection.connection.createStatement();
+            statement = AdminRoutesTest.connection.createStatement();
             resultSet = statement.executeQuery("SELECT title FROM movies");  //Получаем из БД список titles of movies
             List<String> titleList = new ArrayList<>();
             while (resultSet.next()) {

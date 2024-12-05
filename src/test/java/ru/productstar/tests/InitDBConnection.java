@@ -1,6 +1,8 @@
 package ru.productstar.tests;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,6 +13,7 @@ public class InitDBConnection {
     static String DB_PASSWORD = "postgres";
     static Connection connection;
 
+    @BeforeAll
     public static void initDBConnection() {
         try {
             // Class.forName("org.postgresql.Driver");
@@ -20,6 +23,7 @@ public class InitDBConnection {
         }
     }
 
+    @AfterAll
     static void closeDBConnection() {
         try {
             InitDBConnection.connection.close();
