@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.sql.Statement;
 
-public class UserRoutesTest implements CommonSetup {
+public class UserRoutesTest extends InitDBConnection {
     OkHttpClient client = new OkHttpClient();
 
     @Test
@@ -53,7 +53,7 @@ public class UserRoutesTest implements CommonSetup {
     void getUserByEmailWhenAuthorised() {
         //Arrange
         try {
-            Statement statement = InitDBConnection.connection.createStatement();
+            Statement statement = UserRoutesTest.connection.createStatement();
             statement.executeUpdate("insert into users (first_name, last_name, email, password, created_at, updated_at) values ('User1', 'LastNameUser1', 'user@example.com', '$2a$14$wVsaPvJnJJsomWArouWCtusem6S/.Gauq/GjOIEHpyh2DAMmso1wy', '2024-11-28', '2024-11-28')"); //Создаем в БД нового user
 
             //Act
@@ -67,7 +67,7 @@ public class UserRoutesTest implements CommonSetup {
             //Assert
             Assertions.assertTrue(response.contains("\"email\":\"user@example.com\""));  //Проверяем что response возвращает email нового user
 
-            statement = InitDBConnection.connection.createStatement();
+            statement = UserRoutesTest.connection.createStatement();
             statement.executeUpdate("DELETE FROM users WHERE email = 'user@example.com'");  //Удаляем созданного user из БД
         } catch (Exception e) {
             Assertions.fail("Exception: " + e.getMessage());
@@ -78,7 +78,7 @@ public class UserRoutesTest implements CommonSetup {
     void getUserByEmailWhenUnauthorised() {
         //Arrange
         try {
-            Statement statement = InitDBConnection.connection.createStatement();
+            Statement statement = UserRoutesTest.connection.createStatement();
             statement.executeUpdate("insert into users (first_name, last_name, email, password, created_at, updated_at) values ('User1', 'LastNameUser1', 'user@example.com', '$2a$14$wVsaPvJnJJsomWArouWCtusem6S/.Gauq/GjOIEHpyh2DAMmso1wy', '2024-11-28', '2024-11-28')");  //Создаем в БД нового user
 
             //Act
@@ -92,7 +92,7 @@ public class UserRoutesTest implements CommonSetup {
             //Assert
             Assertions.assertEquals(401, response.code());  //Проверяем статус код response
 
-            statement = InitDBConnection.connection.createStatement();
+            statement = UserRoutesTest.connection.createStatement();
             statement.executeUpdate("DELETE FROM users WHERE email = 'user@example.com'");  //Удаляем созданного user из БД
         } catch (Exception e) {
             Assertions.fail("Exception: " + e.getMessage());

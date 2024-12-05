@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoviesRoutesTest implements CommonSetup {
+public class MoviesRoutesTest extends InitDBConnection {
     OkHttpClient client = new OkHttpClient();
 
     @Test
@@ -17,7 +17,7 @@ public class MoviesRoutesTest implements CommonSetup {
         //Arrange
         String[] filmGenres;
         try {
-            Statement statement = InitDBConnection.connection.createStatement();
+            Statement statement = MoviesRoutesTest.connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT genre FROM genres"); //Получаем из БД список genres
             List<String> genreList = new ArrayList<>();
             while (resultSet.next()) {
@@ -49,7 +49,7 @@ public class MoviesRoutesTest implements CommonSetup {
         String[] filmTitles;
         try {
             // Class.forName("org.postgresql.Driver");
-            Statement statement = InitDBConnection.connection.createStatement();
+            Statement statement = MoviesRoutesTest.connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT title FROM movies"); //Получаем из БД список titles of movies
             List<String> titleList = new ArrayList<>();
             while (resultSet.next()) {
@@ -82,7 +82,7 @@ public class MoviesRoutesTest implements CommonSetup {
         String genreID = "";
         try {
             // Class.forName("org.postgresql.Driver");
-            Statement statement = InitDBConnection.connection.createStatement();
+            Statement statement = MoviesRoutesTest.connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select id from genres limit 1");  //Получаем id первого genre в БД
             while (resultSet.next()) {
                 genreID = resultSet.getString("id");
@@ -120,7 +120,7 @@ public class MoviesRoutesTest implements CommonSetup {
         String genreID = "";
         try {
             // Class.forName("org.postgresql.Driver");
-            Statement statement = InitDBConnection.connection.createStatement();
+            Statement statement = MoviesRoutesTest.connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select max(id)+1 as maxId from genres");  //Получаем из БД максимальное значение genre id увеличенное на 1
             while (resultSet.next()) {
                 genreID = resultSet.getString("maxId");
@@ -141,7 +141,7 @@ public class MoviesRoutesTest implements CommonSetup {
         String filmID = "";
         try {
             // Class.forName("org.postgresql.Driver");
-            Statement statement = InitDBConnection.connection.createStatement();
+            Statement statement = MoviesRoutesTest.connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT id, title FROM movies LIMIT 1");  //Получаем id и title первого movie из БД
             while (resultSet.next()) {
                 filmTitle = resultSet.getString("title");
@@ -170,7 +170,7 @@ public class MoviesRoutesTest implements CommonSetup {
         String filmID = "";
         try {
             // Class.forName("org.postgresql.Driver");
-            Statement statement = InitDBConnection.connection.createStatement();
+            Statement statement = MoviesRoutesTest.connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select max(id)+1 as maxId from movies");  //Получаем из БД максимальное значение movie id увеличенное на 1
             while (resultSet.next()) {
                 filmID = resultSet.getString("maxId");
